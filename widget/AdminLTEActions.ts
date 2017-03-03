@@ -452,8 +452,9 @@ namespace myProject{
         document.getElementById(box.elementID).appendChild(outerDiv);
 
     }
-    
-//Direct Chat -----------------------------------------------------------------
+
+
+ //Direct Chat -----------------------------------------------------------------
     export interface directChatElements {
         elementID: string,
         boxType: "box-primary" | "box-success" | "box-warning" | "box-danger",
@@ -548,7 +549,441 @@ namespace myProject{
 
     };
 
-    function addDirectChat(box: directChatElements, chatMsgs: directChatMsg[], contList: directChatContact[])
+    function addDirectChat(box: directChatElements, chatMsgs: directChatMsg[], contList: directChatContact[]) {
 
+        var outerDiv = document.createElement("div");
+        outerDiv.className = "col-md-3 col-sm-6 col-xs-12";
 
+        //direct chat primary
+        var boxDiv = document.createElement("div");
+        boxDiv.className = "box " + box.boxType + " direct-chat " + box.directChatType;
+
+        //header
+        var headerDiv = document.createElement("div");
+        headerDiv.className = "box-header with-border";
+        headerDiv.innerHTML = '<h3 class="box-title">' + box.chatTitle + '</h3>';
+
+        var boxTools = document.createElement("div");
+        boxTools.className = "box-tools pull-right";
+
+        var toolSpan = document.createElement("span");
+        toolSpan.setAttribute("data-toggle", "tooltip");
+        toolSpan.title = box.numNewMessages + " New Messages";
+        toolSpan.className = "badge " + box.badgeColor;
+        toolSpan.innerHTML = box.numNewMessages;
+
+        var toolCollapse = document.createElement("button");
+        toolCollapse.className = "btn btn-box-tool";
+        toolCollapse.setAttribute("data-widget", "collapse");
+        toolCollapse.innerHTML = '<i class="fa fa-minus"></i>';
+
+        var toolTooltip = document.createElement("button");
+        toolTooltip.className = "btn btn-box-tool";
+        toolTooltip.setAttribute("data-widget", "chat-pane-toggle");
+        toolTooltip.innerHTML = '<i class="fa fa-comments"></i>';
+        toolTooltip.title = "Contacts";
+        toolTooltip.setAttribute("data-toggle","tooltip")
+
+        var toolRemove = document.createElement("button");
+        toolRemove.className = "btn btn-box-tool";
+        toolRemove.setAttribute("data-widget", "remove");
+        toolRemove.innerHTML = '<i class="fa fa-times"></i>';
+
+        //Build Header 
+        headerDiv.appendChild(boxTools);
+        boxTools.appendChild(toolSpan);
+        boxTools.appendChild(toolCollapse);
+        boxTools.appendChild(toolTooltip);
+        boxTools.appendChild(toolRemove);
+
+        //Body
+        var bodyDiv = document.createElement("div");
+        bodyDiv.className = "box-body";
+
+        var directChatMessages = document.createElement("div");
+        directChatMessages.className = "direct-chat-messages";
+        directChatMessages.id = "chat-messages";
+                
+        //for each message//
+        for (var j = 0; j < chatMsgs.length; j++) {
+
+            var msg: directChatMsg = chatMsgs[j];
+            
+            var chatboxDirection = (msg.chatOnRight == true) ? "direct-chat-msg right" : "direct-chat-msg ";
+            var chatNameDirection = (msg.chatOnRight == true) ? "direct-chat-name pull-right" : "direct-chat-name pull-left";
+            var chatTimeDirection = (msg.chatOnRight == true) ? "direct-chat-timestamp pull-left" : "direct-chat-timestamp pull-right"
+
+            var chatMessage = document.createElement("div");
+            chatMessage.className = chatboxDirection;
+
+            var directChatInfo = document.createElement("div");
+            directChatInfo.className = "direct-chat-info clearfix";
+
+            var spanName = document.createElement("span");
+            spanName.className = chatNameDirection;
+            spanName.innerHTML = msg.msgName;
+
+            var spanTimestamp = document.createElement("span");
+            spanTimestamp.className = chatTimeDirection;
+            spanTimestamp.innerHTML = msg.timeStamp;
+
+            directChatInfo.appendChild(spanName);
+            directChatInfo.appendChild(spanTimestamp);
+
+            var directChatImage = document.createElement("img");
+            directChatImage.className = "direct-chat-img";
+            directChatImage.src = msg.chatImg;
+            directChatImage.alt = "message user image"
+
+            var directChatText = document.createElement("div");
+            directChatText.className = "direct-chat-text";
+            directChatText.innerHTML = msg.chatText;
+
+            chatMessage.appendChild(directChatInfo);
+            chatMessage.appendChild(directChatImage);
+            chatMessage.appendChild(directChatText);           
+            directChatMessages.appendChild(chatMessage);
+          
+        }
+        //---------------------------------------------------
+
+        var directChatContacts = document.createElement("div");
+        directChatContacts.className = "direct-chat-contacts";
+
+        var contactList = document.createElement("ul");
+        contactList.className = "contacts-list"
+        directChatContacts.appendChild(contactList);
+
+        //for each contact
+        for (var w = 0; w < contList.length; w++) {
+
+            var contact: directChatContact = contList[w];
+
+            var contactEntry = document.createElement("li");
+
+            var a = document.createElement("a");
+            a.href = (contact.hRef!= undefined)?contact.hRef:"#";
+
+            var img = document.createElement("img");
+            img.className = "contacts-list-img"
+            img.src = contact.contactImage;
+
+            var contactInfo = document.createElement("div");
+            contactInfo.className = "contacts-list-info"
+
+            var contactSpanName = document.createElement("span");
+            contactSpanName.className = "contacts-list-name"
+            contactSpanName.innerHTML = contact.contactName;
+
+            var contDate = document.createElement("small");
+            contDate.className = "contacts-list-date pull-right";
+            contDate.innerHTML = contact.contactDate;
+
+            var contactSpanMsg = document.createElement("span");
+            contactSpanMsg.className = "contacts-list-msg";
+            contactSpanMsg.innerHTML = contact.contactText;
+
+            contactSpanName.appendChild(contDate);
+            contactInfo.appendChild(contactSpanName);
+            contactInfo.appendChild(contactSpanMsg);
+            a.appendChild(img);
+            a.appendChild(contactInfo);
+            contactEntry.appendChild(a);
+            contactList.appendChild(contactEntry);
+        }
+        //---------------------------------------------------
+               
+
+        //build body
+        bodyDiv.appendChild(directChatMessages);
+        bodyDiv.appendChild(directChatContacts);
+        
+
+        //Footer
+        var footerDiv = document.createElement("div");
+        footerDiv.className = "box-footer";
+
+        var formDiv = document.createElement("form");
+        formDiv.action = "#";
+        formDiv.method = "post";
+
+        var inputDiv = document.createElement("div");
+        inputDiv.className = "input-group";
+
+        var inputArea = document.createElement("input");
+        inputArea.type = "text";
+        inputArea.name = "message";
+        inputArea.placeholder = "Type Message...";
+        inputArea.className = "form-control";
+
+        var inputSpan = document.createElement("span");
+        inputSpan.className = "input-group-btn";
+
+        var inputButton = document.createElement("button");
+        inputButton.type = "button";
+        inputButton.className = "btn btn-primary btn-flat";
+        inputButton.innerHTML = "Send";
+
+        //Build Footer
+        inputSpan.appendChild(inputButton);
+        inputDiv.appendChild(inputArea);
+        inputDiv.appendChild(inputSpan);
+        formDiv.appendChild(inputDiv);
+        footerDiv.appendChild(formDiv);        
+
+        //Build Final
+        outerDiv.appendChild(boxDiv);
+        boxDiv.appendChild(headerDiv);
+        boxDiv.appendChild(bodyDiv);
+        boxDiv.appendChild(footerDiv);        
+
+        document.getElementById(box.elementID).appendChild(outerDiv);
+    };
+
+    // Social Widgets -------------------------------------------------------------
+
+    export interface userWidgetElements {
+        elementID: string,
+        bgColor: string, 
+        userName: string,
+        userDesc?: string,
+        userImage?: string,
+        projHref?: string ,  
+        taskHref?: string, 
+        compProjHref?: string, 
+        followHref?: string,
+        bgImage?:string,
+    }
+
+    export interface userStatElements {
+        statName: string, 
+        statValue: string, 
+        statColor?: string
+        hRef?: string, 
+    }
+
+    function userWidgetSamples() {
+        var user1: userWidgetElements = {
+            elementID: "buildME",
+            bgColor: "bg-yellow",
+            userImage: "/Content/adminlte/img/avatar04.png",
+            userName: "Nadia Carmichael",         
+            userDesc: "Lead Developer",
+            bgImage: "/Content/adminlte/img/photo1.jpg",
+        }
+
+        var user2: userWidgetElements = {
+            elementID: "buildME",
+            bgColor: "bg-aqua-active",
+            userImage: "/Content/adminlte/img/avatar.png",
+            userName: "Alexander Pierce",
+            userDesc: "Founder & CEO",         
+        }
+
+        var user3: userWidgetElements = {
+            elementID: "buildME",
+            bgColor: "bg-black",
+            userImage: "/Content/adminlte/img/avatar.png",
+            userName: "Elizabeth Pierce",
+            userDesc: "Web Designer",
+            bgImage: "/Content/adminlte/img/photo1.jpg",
+        }
+        var projects: userStatElements = {
+            statName: "Projects",
+            statValue: "31",
+            statColor: "bg-blue",
+            hRef: "#"
+        }
+
+        var tasks: userStatElements = {
+            statName: "Tasks",
+            statValue: "5",
+            statColor: "bg-aqua",
+            hRef: "#"
+        }
+
+        var completedProjects: userStatElements = {
+            statName: "Completed Projects",
+            statValue: "12",
+            statColor: "bg-green",
+            hRef: "#"
+        }
+
+        var followers: userStatElements = {
+            statName: "Followers",
+            statValue: "842",
+            statColor: "bg-red",
+            hRef: "https://www.google.com"
+        }
+
+        var sales: userStatElements = {
+            statName: "SALES",
+            statValue: "3,200"            
+        }
+
+        var products: userStatElements = {
+            statName: "Products",
+            statValue: "35"            
+        }
+
+        var userStats: userStatElements[] = [projects, tasks, completedProjects, followers];
+        var userStats2: userStatElements[] = [sales, followers, products];
+
+        addUserWidget1(user1, userStats);
+        addUserWidget2(user2, userStats2);
+        addUserWidget2(user3, userStats2);
+
+    };
+
+    function addUserWidget1(box: userWidgetElements, stats: userStatElements[]) {
+        var outerDiv = document.createElement("div");
+        outerDiv.className = "col-md-4 col-sm-6 col-xs-12";
+
+        var boxDiv= document.createElement("div");
+        boxDiv.className = "box box-widget widget-user-2";
+
+        var boxHeader = document.createElement("div");
+        boxHeader.className = "widget-user-header " + box.bgColor;
+
+        var userImage= document.createElement("div");
+        userImage.className = "widget-user-image";
+
+        var Image = document.createElement("img");
+        Image.className = "img-circle";
+        Image.alt = "User Avatar";
+        Image.src = box.userImage;
+        userImage.appendChild(Image);
+
+        var userName = document.createElement("h3");
+        userName.className = "widget-user-username";
+        userName.innerHTML = (box.userName != undefined)? box.userName:"";
+
+        var userDescription = document.createElement("h5");
+        userDescription.className = "widget-user-desc";
+        userDescription.innerHTML = (box.userDesc != undefined) ? box.userDesc : "";
+
+        //build header
+        boxHeader.appendChild(userImage);
+        boxHeader.appendChild(userName);
+        boxHeader.appendChild(userDescription);        
+
+        var boxFooter = document.createElement("div");
+        boxFooter.className = "box-footer no-padding";
+
+        var footerList = document.createElement("ul");
+        footerList.className = "nav nav-stacked";
+        
+        for (var i = 0; i < stats.length; i++) {
+
+            var statEntry:userStatElements = stats[i];
+
+            var entry = document.createElement("li");
+
+            var entryA = document.createElement("a");
+            entryA.href = (statEntry.hRef != undefined) ? statEntry.hRef : "#";
+            entryA.innerHTML = statEntry.statName;
+
+            var entrySpan = document.createElement("span");
+            entrySpan.className = (statEntry.statColor != undefined) ? "pull-right badge " + statEntry.statColor : "pull-right badge";
+            entrySpan.innerHTML = statEntry.statValue;
+
+            entryA.appendChild(entrySpan);
+            entry.appendChild(entryA);            
+            footerList.appendChild(entry);
+        }                
+
+        //build footer
+        boxFooter.appendChild(footerList);
+
+        //final Build
+        outerDiv.appendChild(boxDiv);
+        boxDiv.appendChild(boxHeader);
+        boxDiv.appendChild(boxFooter);       
+
+        document.getElementById(box.elementID).appendChild(outerDiv);
+    }
+
+    function addUserWidget2(box: userWidgetElements, stats: userStatElements[]) {
+                       
+        var outerDiv = document.createElement("div");
+        outerDiv.className = "col-md-4 col-sm-6 col-xs-12";
+
+        var boxDiv = document.createElement("div");
+        boxDiv.className = "box box-widget widget-user";
+
+        //header
+        var boxHeader = document.createElement("div");
+        boxHeader.className = "widget-user-header " + box.bgColor;
+
+        if (box.bgImage != undefined) {
+
+            boxHeader.style.background = "url('" + box.bgImage + "') center center";
+        }
+        
+        var userName = document.createElement("h3");
+        userName.className = "widget-user-username";
+        userName.innerHTML = (box.userName != undefined) ? box.userName : "";
+
+        var userDescription = document.createElement("h5");
+        userDescription.className = "widget-user-desc";
+        userDescription.innerHTML = (box.userDesc != undefined) ? box.userDesc : "";
+
+        //build header
+        boxHeader.appendChild(userName);
+        boxHeader.appendChild(userDescription);
+
+        //user Image
+        var userImage = document.createElement("div");
+        userImage.className = "widget-user-image";
+
+        var Image = document.createElement("img");
+        Image.className = "img-circle";
+        Image.alt = "User Avatar";
+        Image.src = box.userImage;
+
+        //build user image
+        userImage.appendChild(Image);
+
+        //Footer
+        var boxFooter = document.createElement("div");
+        boxFooter.className = "box-footer";
+
+        var footerList = document.createElement("div");
+        footerList.className = "row";
+
+        for (var i = 0; i < stats.length; i++) {
+
+            var statEntry: userStatElements = stats[i];
+
+            var entry = document.createElement("div");
+            entry.className = "col-sm-4 border-right";
+
+            var entryBlock = document.createElement("div");
+            entryBlock.className = "description-block";
+            
+            var entryHeader = document.createElement("h5");
+            entryHeader.className = "description-header";
+            entryHeader.innerHTML = statEntry.statValue;
+
+            var entryText = document.createElement("span");
+            entryText.className = "description-text";
+            entryText.innerHTML = statEntry.statName;
+
+            entryBlock.appendChild(entryHeader);
+            entryBlock.appendChild(entryText);
+            entry.appendChild(entryBlock);
+            footerList.appendChild(entry);
+        }
+
+        //build footer
+        boxFooter.appendChild(footerList);
+
+        //final Build
+        outerDiv.appendChild(boxDiv);
+        boxDiv.appendChild(boxHeader);
+        boxDiv.appendChild(userImage);
+        boxDiv.appendChild(boxFooter);
+
+        document.getElementById(box.elementID).appendChild(outerDiv);
+    }    
 }
