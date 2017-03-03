@@ -16,6 +16,7 @@ namespace myProject{
         
     }
 
+   //Info BOX -----------------------------------------------------------------
     export interface infoBoxElements{
         elementID: string, 
         icon: string,
@@ -193,7 +194,7 @@ namespace myProject{
 
         document.getElementById(box.elementID).appendChild(myDiv);        
     }
-
+    //Stat BOX -----------------------------------------------------------------
     export interface statBoxElements {
         elementID: string,
         icon: string,
@@ -294,6 +295,7 @@ namespace myProject{
         document.getElementById(box.elementID).appendChild(myDiv);
     }
 
+    //Standard BOX -----------------------------------------------------------------
     export interface standardBoxElements {
         elementID: string,        
         boxBody: string,
@@ -397,6 +399,7 @@ namespace myProject{
 
     };
 
+
     function addStandardBox(box: standardBoxElements) {
 
         var collapsed = (box.collapsible == true) ? (box.isCollapsed == true) ? "collapsed-box" : "" : "";
@@ -449,8 +452,103 @@ namespace myProject{
         document.getElementById(box.elementID).appendChild(outerDiv);
 
     }
+    
+//Direct Chat -----------------------------------------------------------------
+    export interface directChatElements {
+        elementID: string,
+        boxType: "box-primary" | "box-success" | "box-warning" | "box-danger",
+        directChatType: "direct-chat-primary" | "direct-chat-success" | "direct-chat-warning" | "direct-chat-danger",
+        chatTitle: string,
+        numNewMessages: string,
+        badgeColor: string,
+    };
 
-    function addStandardBox2(box: standardBoxElements) { /*need to create string literal*/};
+    export interface directChatMsg {
+        msgName: string, 
+        timeStamp: string, 
+        chatImg: string, 
+        chatText: string,
+        chatOnRight?: boolean
+    }
+
+    export interface directChatContact {        
+        contactImage: string,
+        contactName: string,
+        contactDate: string,
+        contactText: string,
+        hRef?: string        
+    }
+
+    function directChatSamples() {
+      
+        var directChat1: directChatElements = {
+            elementID: "buildME",
+            boxType: "box-primary",
+            directChatType: "direct-chat-primary",
+            chatTitle: "Direct Chat",
+            numNewMessages: "3",
+            badgeColor: "bg-light-blue"
+        };
+        var directChat2: directChatElements = {
+            elementID: "buildME",
+            boxType: "box-success",
+            directChatType: "direct-chat-success",
+            chatTitle: "Direct Chat",
+            numNewMessages: "3",
+            badgeColor: "bg-light-blue"
+        };
+        var directChat3: directChatElements = {
+            elementID: "buildME",
+            boxType: "box-warning",
+            directChatType: "direct-chat-warning",
+            chatTitle: "Direct Chat",
+            numNewMessages: "3",
+            badgeColor: "bg-light-blue"
+        };
+        var directChat4: directChatElements = {
+            elementID: "buildME",
+            boxType: "box-danger",
+            directChatType: "direct-chat-danger",
+            chatTitle: "Direct Chat",
+            numNewMessages: "3",
+            badgeColor: "bg-light-blue"
+        };
+
+        var msg1: directChatMsg = {
+            msgName: "Alexander Pierce",
+            timeStamp: "23 Jan 2:00 pm",
+            chatImg: "/Content/adminlte/img/avatar.png",
+            chatText: "Is this template really for free? That's unbelievable!",
+            chatOnRight: false
+        };
+
+        var msg2: directChatMsg = {
+            msgName: "Sarah Bullock",
+            timeStamp: "23 Jan 2:05 pm",
+            chatImg: "/Content/adminlte/img/avatar2.png",
+            chatText: "You better believe it!",
+            chatOnRight: true
+        };
+
+        var contact1: directChatContact = {
+            contactImage: "/Content/adminlte/img/avatar.png",
+            contactName: "Count Dracula",
+            contactDate: "2/28/2015",
+            contactText: "How have you been? I was...",
+            hRef: "#"
+        };
+                
+        var myMessages: directChatMsg[] = [msg1, msg2];
+        var myContacts: directChatContact[] = [contact1];
+
+        addDirectChat(directChat1, myMessages, myContacts);
+        addDirectChat(directChat2, myMessages, myContacts);
+        addDirectChat(directChat3, myMessages, myContacts);
+        addDirectChat(directChat4, myMessages, myContacts);
+
+    };
+
+    function addDirectChat(box: directChatElements, chatMsgs: directChatMsg[], contList: directChatContact[])
 
 
 }
