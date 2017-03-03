@@ -11,6 +11,9 @@ namespace myProject{
             infoBoxSamples();
             statBoxSamples();                   
             standardBoxSamples();
+            directChatSamples();
+            userWidgetSamples();
+            boxCommentSamples("buildME");
         };
               
         
@@ -986,4 +989,319 @@ namespace myProject{
 
         document.getElementById(box.elementID).appendChild(outerDiv);
     }    
+
+ //Comment Box -----------------------------------------------------------------
+    export interface boxCommentElements {
+        elementID: string, 
+        postuserImage: string, 
+        postuserName: string, 
+        postuserDesc: string,
+        postuserHref: string,
+        bodyImage?: string,
+        bodyMsg: string,
+        postStats: string,
+        hasAttachment?: boolean,
+        attachImg?: string,
+        attachHeadHref?: string, 
+        attachHeadText?: string,
+        attachBodytext?: string,
+        attachBodyHref?:string
+                        
+    }
+
+    export interface userCommentElements {
+        commentImage: string,
+        commentName: string,
+        commentInsertDate: string,
+        commentMsg: string     
+    }
+
+    function boxCommentSamples(targetID:string) {
+
+        var box: boxCommentElements = {
+            elementID: targetID,
+            postuserImage: "/Content/adminlte/img/avatar.png",
+            postuserName: "Jonathan Burke Jr.",
+            postuserDesc: "Shared publicly - 7:30 PM Today",
+            postuserHref: "#",
+            bodyImage: "/Content/adminlte/img/photo1.jpg",
+            bodyMsg: "<p>Far far away, behind the word mountains, far from the countries Vokalia and " +
+            "Consonantia, there live the blindtexts.Separated they live in Bookmarksgrove right at</p>" +
+            "<p>the coast of the Semantics, a large language ocean.A small river named Duden flows by " +
+            "their place and supplies it with the necessary regelialia.It is a paradisematic country, " +
+            "in which roasted parts of sentences fly into your mouth.</p>",
+            postStats: "45 likes - 2 comments",        
+        }  
+
+        var box2: boxCommentElements = {
+            elementID: targetID,
+            postuserImage: "/Content/adminlte/img/avatar.png",
+            postuserName: "Jonathan Burke Jr.",
+            postuserDesc: "Shared publicly - 7:30 PM Today",
+            postuserHref: "#",            
+            bodyMsg: "<p>Far far away, behind the word mountains, far from the countries Vokalia and " +
+            "Consonantia, there live the blindtexts.Separated they live in Bookmarksgrove right at</p>" +
+            "<p>the coast of the Semantics, a large language ocean.A small river named Duden flows by " +
+            "their place and supplies it with the necessary regelialia.It is a paradisematic country, " +
+            "in which roasted parts of sentences fly into your mouth.</p>",
+            postStats: "45 likes - 2 comments",
+            hasAttachment: true, 
+            attachImg: "/Content/adminlte/img/photo1.jpg",
+            attachHeadHref: "http://www.lipsum.com/",
+            attachHeadText: "Lorem ipsum text generator",
+            attachBodytext: "Description about the attachment can be placed here.Lorem Ipsum is " +
+                            "simply dummy text of the printing and typesetting industry...",
+            attachBodyHref: "#"
+        }  
+
+        var comment1: userCommentElements = {            
+            commentImage: "/Content/adminlte/img/avatar3.png",
+            commentName: "Maria Gonzales",
+            commentInsertDate: "8:03 PM Today",
+            commentMsg: "It is a long established fact that a reader will be distracted " +
+            "by the readable content of a page when looking at its layout."
+        }              
+        var comment2: userCommentElements = {
+            commentImage: "/Content/adminlte/img/avatar.png",
+            commentName: "Nora Havisham",
+            commentInsertDate: "8:03 PM Today",
+            commentMsg: " The point of using Lorem Ipsum is that it has a more-or-less normal distribution of "+
+                        "letters, as opposed to using 'Content here, content here', making it look like readable English."
+        }     
+
+        var theComments: userCommentElements[] = [comment1, comment2];
+        var userImg: string = "/Content/adminlte/img/avatar5.png";
+
+        boxCommentWidget(box, theComments, userImg);
+        boxCommentWidget(box2, theComments, userImg);
+    }    
+
+    function boxCommentWidget(box: boxCommentElements, comments: userCommentElements[], userImg?:string) {
+
+        var outerDiv = document.createElement("div");
+        outerDiv.className = "col-lg-4 col-md-4 col-sm-6 col-xs-12";
+
+        var boxDiv = document.createElement("div");
+        boxDiv.className = "box box-widget";
+        outerDiv.appendChild(boxDiv);
+
+        var boxHeader = document.createElement("div");
+        boxHeader.className = "box-header with-border";
+
+        //header User
+        var headerUser = document.createElement("div");
+        headerUser.className = "user-block";
+
+        var userImage = document.createElement("img");
+        userImage.className = "img-circle";
+        userImage.alt = "user image";
+        userImage.src = box.postuserImage;
+
+        var userName = document.createElement("span");
+        userName.className = "username";
+
+        var userNameA = document.createElement("a");
+        userNameA.href = (box.postuserHref != undefined) ? box.postuserHref : "#";
+        userNameA.innerHTML = box.postuserName;
+
+        var userDescription= document.createElement("span");
+        userDescription.className = "description";
+        userDescription.innerHTML = box.postuserDesc;
+
+        //build header user
+        headerUser.appendChild(userImage);
+        headerUser.appendChild(userName);
+        userName.appendChild(userNameA);
+        headerUser.appendChild(userDescription);
+
+        //Header Tools
+        var headerTools = document.createElement("div");
+        headerTools.className = "box-tools";
+
+        var toolMarkRead = document.createElement("button");
+        toolMarkRead.className = "btn btn-box-tool";
+        toolMarkRead.title = "Mark as read";
+        toolMarkRead.setAttribute("data-toggle","tooltip")
+
+        var markReadI = document.createElement("i");
+        markReadI.className = "fa fa-circle-o";
+        toolMarkRead.appendChild(markReadI);
+
+        var toolCollapse = document.createElement("button");
+        toolCollapse.className = "btn btn-box-tool";
+        toolCollapse.setAttribute("data-widget", "collapse")
+
+        var collapseI = document.createElement("i");
+        collapseI.className = "fa fa-minus";
+        toolCollapse.appendChild(collapseI);
+
+        var toolRemove = document.createElement("button");
+        toolRemove.className = "btn btn-box-tool";
+        toolRemove.setAttribute("data-widget", "remove")
+
+        var removeI = document.createElement("i");
+        removeI.className = "fa fa-times";
+        toolRemove.appendChild(removeI);
+
+        //build header tool
+        headerTools.appendChild(toolMarkRead);
+        headerTools.appendChild(toolCollapse);
+        headerTools.appendChild(toolRemove);
+
+        //build boxHeader
+        boxHeader.appendChild(headerUser);
+        boxHeader.appendChild(headerTools);
+
+        //Body
+        var boxBody = document.createElement("div");
+        boxBody.className = "box-body";
+
+        if (box.bodyImage != undefined) {
+            var bodyImage = document.createElement("img");
+            bodyImage.className = "img-responsive pad";
+            bodyImage.alt = "Photo";
+            bodyImage.src = box.bodyImage;
+            boxBody.appendChild(bodyImage);
+        }
+
+        var bodyMessage = document.createElement("p");
+        bodyMessage.className = "box-body";
+        bodyMessage.innerHTML = box.bodyMsg;
+        boxBody.appendChild(bodyMessage);
+
+        
+        if (box.hasAttachment == true) {
+
+            var bodyAttachment = document.createElement("div");
+            bodyAttachment.className = "attachment-block clearfix";
+
+            var attachImg = document.createElement("img");
+            attachImg.className = "attachment-img";
+            attachImg.alt = "attachment image";
+            attachImg.src = box.attachImg;
+            bodyAttachment.appendChild(attachImg);
+            
+            var attachPush = document.createElement("div");
+            attachPush.className = "attachment-pushed";
+            bodyAttachment.appendChild(attachPush);
+
+            var attachHeading = document.createElement("h4");
+            attachHeading.className = "attachment-heading";
+            attachPush.appendChild(attachHeading);
+
+            var headingA = document.createElement("a");
+            headingA.href = (box.attachHeadHref != undefined) ? box.attachHeadHref : "#";
+            headingA.innerHTML = box.attachHeadText;
+            attachHeading.appendChild(headingA);
+
+            var attachText = document.createElement("div");
+            attachText.className = "attachment-text";
+            attachText.innerHTML = box.attachBodytext;
+            attachPush.appendChild(attachText);
+
+            var textA = document.createElement("a");
+            textA.href = (box.attachBodyHref != undefined) ? box.attachBodyHref : "#";
+            textA.innerHTML = "more";
+            attachText.appendChild(textA);
+
+            boxBody.appendChild(bodyAttachment);        
+        }
+
+        var bodyShare= document.createElement("button");
+        bodyShare.className = "btn btn-default btn-xs";
+        var shareI = document.createElement("i");
+        shareI.className = "fa fa-share";
+        bodyShare.appendChild(shareI);
+        bodyShare.innerHTML = "Share";
+
+        var bodyLike = document.createElement("button");
+        bodyLike.className = "btn btn-default btn-xs";
+        var likeI = document.createElement("i");
+        likeI.className = "fa fa-thumbs-o-up";
+        bodyLike.appendChild(likeI);
+        bodyLike.innerHTML = "Like";
+
+        var bodySpan = document.createElement("span");
+        bodySpan.className = "pull-right text-muted";
+        bodySpan.innerHTML = box.postStats;        
+
+        //build rest of body               
+        boxBody.appendChild(bodyShare);
+        boxBody.appendChild(bodyLike);
+        boxBody.appendChild(bodySpan);
+
+        //Footer Comments
+        var boxFooterComments= document.createElement("div");
+        boxFooterComments.className = "box-footer box-comments";
+
+        for (var x = 0; x < comments.length; x++) {
+
+            var currentComment: userCommentElements = comments[x];
+
+            var comBox = document.createElement("div")
+            comBox.className = "box-comment";
+
+            var comImg = document.createElement("img");
+            comImg.className = "img-circle img-sm";
+            comImg.alt = "user image";
+            comImg.src = currentComment.commentImage;
+
+            var comText = document.createElement("div");
+            comText.className = "comment-text";
+
+            var textName = document.createElement("span");
+            textName.className = "username";
+            textName.innerHTML = currentComment.commentName;
+            var textEntryDate = document.createElement("span");
+            textEntryDate.className = "text-muted pull-right"
+            textEntryDate.innerHTML = currentComment.commentInsertDate;
+            textName.appendChild(textEntryDate);
+
+            comText.appendChild(textName);
+            comText.innerHTML = currentComment.commentMsg;       
+
+            //build Comment Entry
+            comBox.appendChild(comImg);
+            comBox.appendChild(comText);
+
+            //add to comment list
+            boxFooterComments.appendChild(comBox);
+        }
+
+        //Footer
+        var boxFooter = document.createElement("div");
+        boxFooter.className = "box-footer";
+
+        var footerForm = document.createElement("form");
+        footerForm.action = "#";
+        footerForm.method = "post";
+
+        var formImg = document.createElement("img");
+        formImg.className = "img-responsive img-circle img-sm";
+        formImg.alt = "alt text";
+        formImg.src = userImg;
+                
+        var formPush = document.createElement("div");
+        formPush.className = "img-push";
+
+        var pushInput = document.createElement("input");
+        pushInput.type = "text";
+        pushInput.className = "form-control input-sm";
+        pushInput.placeholder = "Press enter to post comment";
+
+        formPush.appendChild(pushInput);
+
+        //build Footer
+        footerForm.appendChild(formImg);
+        footerForm.appendChild(formPush);
+
+
+        //build box div
+        boxDiv.appendChild(boxHeader);
+        boxDiv.appendChild(boxBody);
+        boxDiv.appendChild(boxFooterComments);
+        boxDiv.appendChild(boxFooter);
+              
+        document.getElementById(box.elementID).appendChild(outerDiv);
+    }
 }
