@@ -1,0 +1,30 @@
+@{
+    ViewData["Title"] = "sampleAdminLTE";
+}
+
+@section ContentHeader {
+    <h1>@ViewData["Title"]<small> preview page</small></h1>
+}
+
+@section Head {                                       
+    <link rel="stylesheet" href="~/Content/fullcalendar.min.css">
+    <link href='~/Content/fullcalendar.print.css' rel='stylesheet' media='print' />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.2/moment.min.js"></script>
+    <script src="~/Scripts/fullcalendar.min.js"></script>
+    <script src="~/Scripts/gcal.js"></script>
+    <script src="~/Scripts/gcal.min.js"></script>
+}
+
+
+
+<div class="row">
+      <div id="fulcal"></div>
+</div>
+
+<script> 
+    $(function () {
+        $(document).ready(function () {
+            testArea.fullCalendarTest.renderFullCal('fulcal');
+        })
+    });
+</script>
