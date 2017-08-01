@@ -2,7 +2,7 @@
 using Serenity.Services;
 using System.Collections.Generic;
 
-namespace FMCorpIntranet.ChartHelper
+namespace Serene.ChartHelper
 {
     //Morris Charts --------------------------------------------------------------------
     //Area Chart
